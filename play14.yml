@@ -2,7 +2,7 @@
 - name: play to demonstrate archieve module. ie tar and gzip
   hosts: localhost
   become: true
-  remote_user: ansible
+  remote_user: jenkins
   tasks:
    - name: task to archieve the given directory
      archive:
