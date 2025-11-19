@@ -1,0 +1,11 @@
+---
+- name: Simple play to test servers
+  hosts: webservers
+  become: yes
+
+  tasks:
+    - name: Check uptime
+      shell: uptime
+
+    - name: Check disk space
+      shell: df -h
