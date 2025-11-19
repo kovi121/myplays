@@ -2,7 +2,7 @@
 - name: Play to demonstrate conditional statement - when
   hosts: localhost
   gather_facts: no
-  remote_user: ansible
+  remote_user: jenkins
   become: true
   vars:
    res: false
