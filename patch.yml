@@ -1,6 +1,7 @@
 ---
 - name: Linux Patching Playbook
-  hosts: all
+  hosts: 
+        - 172.31.7.205
   become: yes
   gather_facts: yes
 
