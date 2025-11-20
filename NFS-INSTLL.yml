@@ -2,7 +2,7 @@
 - name: Install and configure NFS Server on EC2
   hosts: all
   become: true
-  remote_user: jenkins
+
 
   tasks:
 
