@@ -13,7 +13,7 @@
   hosts: localhost
   become: true
   vars_files:
-   - user_sec.yml
+   - ansi_sec.yml
   tasks:
    - name: Create users
      user:
