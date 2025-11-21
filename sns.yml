@@ -1,16 +1,35 @@
 ---
-- name: Send SNS notification
+- name: Publish message to AWS SNS (via aws CLI)
   hosts: localhost
   connection: local
   gather_facts: no
 
+  vars:
+    sns_topic_arn: "{{ lookup('env','SNS_TOPIC_ARN') | default('arn:aws:sns:ap-south-1:YOUR_ACCOUNT_ID:my-topic') }}"
+    sns_message: "{{ lookup('env','SNS_MESSAGE') | default('Test message from Jenkins via Ansible') }}"
+    aws_region: "{{ lookup('env','AWS_DEFAULT_REGION') | default('ap-south-1') }}"
+
   tasks:
-    - name: Publish message to SNS topic
-      amazon.aws.sns:
-        msg: "Build completed successfully"
-        topic: "arn:aws:sns:ap-south-1:123456789012:myTopic"
-        region: "ap-south-1"
+    - name: Ensure aws CLI exists
+      ansible.builtin.command: aws --version
+      register: aws_cli
+      changed_when: false
+      failed_when: aws_cli.rc != 0
+
+    - name: Publish message to SNS via aws CLI
+      ansible.builtin.command: >
+        aws sns publish
+        --region "{{ aws_region }}"
+        --topic-arn "{{ sns_topic_arn }}"
+        --message "{{ sns_message }}"
       environment:
         AWS_ACCESS_KEY_ID: "{{ lookup('env','AWS_ACCESS_KEY_ID') }}"
         AWS_SECRET_ACCESS_KEY: "{{ lookup('env','AWS_SECRET_ACCESS_KEY') }}"
-        AWS_DEFAULT_REGION: "ap-south-1"
+        AWS_SESSION_TOKEN: "{{ lookup('env','AWS_SESSION_TOKEN') | default(omit) }}"
+        AWS_DEFAULT_REGION: "{{ aws_region }}"
+      register: publish
+      failed_when: publish.rc != 0
+
+    - name: Show publish output
+      ansible.builtin.debug:
+        var: publish.stdout
