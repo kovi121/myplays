@@ -1,7 +1,6 @@
 ---
 - name: Publish message to AWS SNS (via aws CLI)
-  hosts: localhost
-  connection: local
+  hosts: all
   gather_facts: no
 
   vars:
