@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    topic_arn: "arn:aws:sns:ap-south-1:123456789012:my-topic"   # replace
+    region: "ap-south-1"
+
+  tasks:
+    - name: Send notification to SNS
+      shell: |
+        aws sns publish \
+          --region "{{ region }}" \
+          --topic-arn "{{ topic_arn }}" \
+          --message "Test message from Ansible via Jenkins"
