@@ -1,0 +1,2 @@
+[web]
+ec2-webserver ansible_host=172.31.78.161               ansible_user=jenkins
