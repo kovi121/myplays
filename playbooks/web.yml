@@ -1,0 +1,22 @@
+$ cat web.yml
+---
+- name: Deploy Web Site
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Install Apache
+      package:
+        name: httpd
+        state: present
+
+    - name: Start Apache
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Deploy index.html
+      copy:
+        src: ../files/index.html
+        dest: /var/www/html/index.html
